@@ -1,15 +1,12 @@
+import { render } from 'react-dom'
 
 const AWS = require('aws-sdk')
 
+async function generatePollyAudio(text) {
 
-async function callAWSPolly(text) {
-  const Fs = require('fs')
-  console.info("calling polly with", text)
-
-  // Create an Polly client
   const Polly = new AWS.Polly({
     signatureVersion: 'v4',
-    region: 'us-east-1'
+    region: 'eu-central-1'
   })
 
   let params = {
@@ -20,23 +17,11 @@ async function callAWSPolly(text) {
     // TextType: "ssml",
   }
 
-  Polly.synthesizeSpeech(params, (err, data) => {
-    if (err) {
-      console.log(err.code)
-    } else if (data) {
-      if (data.AudioStream instanceof Buffer) {
-        Fs.writeFile("./speech.mp3", data.AudioStream, function (err) {
-          if (err) {
-            return console.log(err)
-          }
-          console.log("The file was saved!")
-        })
-      }
-    }
+  return Polly.synthesizeSpeech(params).promise().then(audio => {
+    if (audio.AudioStream instanceof Buffer) return audio
+    else throw 'AudioStream is not a Buffer.'
   })
-
 }
-
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -44,9 +29,7 @@ export default async function handler(req, res) {
     return
   }
 
-
   const text = req.body.text
-  const stream = await callAWSPolly(text)
-
-  // the rest of your code
+  const audio = await generatePollyAudio(text)
+  res.send(audio.AudioStream)
 }
