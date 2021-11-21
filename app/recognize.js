@@ -1,6 +1,5 @@
-import { resolveHref } from "next/dist/shared/lib/router/router";
 
-function recognize() {
+function recognize(setIsListening) {
 
   var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition || null;
 
@@ -14,6 +13,14 @@ function recognize() {
 
     recognition.start();
 
+    recognition.onsoundstart = even => {
+      setIsListening(true)
+    }
+
+    recognition.onsoundend = even => {
+      setIsListening(false)
+    }
+
     recognition.onnomatch = recognition.onend = recognition.onresult = event => {
       reject(event)
     }
@@ -23,8 +30,8 @@ function recognize() {
       const alt = res[0]
       if (res.isFinal) {
         resolve({ transcript: alt.transcript, confidence: alt.confidence })
-        // } else {
-        // console.info("Intermediate result:" + alt.transcript);
+      } else {
+        console.info("Intermediate result:" + alt.transcript);
       }
     }
   })

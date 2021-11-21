@@ -6,11 +6,17 @@ import { useState } from 'react';
 export default function Home() {
 
   const [active, setActive] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   function onClick() {
     if (!active) {
       setActive(true)
-      init()
+      if (!(typeof window !== 'undefined')) {
+        return
+      }
+      init({
+        setIsListening: setIsListening
+      })
     }
   }
 
@@ -22,8 +28,9 @@ export default function Home() {
 
       <main>
         <h1 className="title" onClick={onClick}>
-          [start]
+          {active ? "Your coach is in session" : "Start session"}
         </h1>
+        {isListening ? "i'm listening" : "i'm not listening"}
       </main>
 
       <footer>

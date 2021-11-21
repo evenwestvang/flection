@@ -1,5 +1,9 @@
 
-let speak = async function (text) {
+async function speak(text) {
+
+  if (text == undefined || text == '') {
+    return
+  }
 
   const res = await fetch('/api/tts', {
     method: 'POST',

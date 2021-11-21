@@ -12,7 +12,7 @@ async function generatePollyAudio(text) {
   let params = {
     'Text': text,
     'OutputFormat': 'mp3',
-    'VoiceId': 'Matthew',
+    'VoiceId': 'Amy',
     'Engine': 'neural'
     // TextType: "ssml",
   }
@@ -31,5 +31,6 @@ export default async function handler(req, res) {
 
   const text = req.body.text
   const audio = await generatePollyAudio(text)
+
   res.send(audio.AudioStream)
 }
