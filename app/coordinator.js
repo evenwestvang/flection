@@ -14,7 +14,7 @@ function init(params) {
 
 function beConfused() {
   const repeatStatements = [
-    "I didt't quite catch that. Could you repeat it.",
+    "I didn't quite catch that. Could you repeat it.",
     "Come again?",
     "Apologies, could you repeat that?"
   ]
