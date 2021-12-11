@@ -3,11 +3,14 @@ import Head from 'next/head'
 
 import { init } from "../app/coordinator.js"
 import { useState } from 'react';
+import { PromptList } from "./PromptList.js"
 
 export default function Home() {
 
   const [active, setActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [prompts, setPrompts] = useState([1, 2, 3, 4]);
 
   function onClick() {
     if (!active) {
@@ -16,25 +19,30 @@ export default function Home() {
         return
       }
       init({
-        setIsListening: setIsListening
+        setIsListening: setIsListening,
+        setIsSpeaking: setIsSpeaking,
+        prompts: prompts,
+        setPrompts: setPrompts
       })
     }
   }
 
+
   return (
 
     <div className="container">
-      <div className="iphone-x">
+      <div onClick={onClick} className="iphone-x">
         <i>Speaker</i>
         <b>Camera</b>
 
         <title>What's on your mind</title>
 
         <main>
-          <h1 className="title" onClick={onClick}>
-            {active ? "Your coach is in session" : "Start session"}
-          </h1>
-          {isListening ? "i'm listening" : "i'm not listening"}
+          <PromptList prompts={prompts} />
+
+          {isSpeaking || isListening ? <div className="active" /> : <div className="passive" />}
+          {isSpeaking || isListening ? "active" : "passive"}
+
         </main>
 
       </div>
@@ -42,8 +50,38 @@ export default function Home() {
 
       <style jsx>{`
 
+        .active {
+          width: 100%;
+          height: 300px;
+          background-image: url("/gifs/speaking.gif");
+          background-repeat: no-repeat;
+          position: absolute;
+          background-size:100%;
+          mix-blend-mode: lighten;
+          bottom: -90px;
+        }
+
+        .passive {
+          width: 100%;
+          height: 300px;
+          background-image: url("/gifs/thinking.gif");
+          background-repeat: no-repeat;
+          position: absolute;
+          background-size:100%;
+          mix-blend-mode: lighten;
+          bottom: -90px;
+        }
+
+        h1 {
+          font-weight: 100;
+          font-size: 3em;
+          text-align: center;
+
+        }
 
         main {
+          font-weight: 100;
+          z-index: 100;
           padding: 5rem 0;
           flex: 1;
           display: flex;
@@ -51,8 +89,6 @@ export default function Home() {
           justify-content: center;
           align-items: center;
         }
-
-
 
     `}</style>
 

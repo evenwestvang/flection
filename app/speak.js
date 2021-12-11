@@ -1,4 +1,11 @@
 
+let setIsSpeaking
+
+function initSpeaker(params) {
+  console.info(params)
+  setIsSpeaking = params.setIsSpeaking
+}
+
 async function speak(text) {
 
   if (text == undefined || text == '') {
@@ -19,13 +26,21 @@ async function speak(text) {
   console.info(buffer.byteLength, "rec mp3 bytes.")
 
   const context = new AudioContext() || new webkitAudioContext()
-  const audioBuffer = await context.decodeAudioData(buffer);
+  const audioBuffer = await context.decodeAudioData(buffer)
   console.info("decoded audio buffer")
 
-  const bufferSource = context.createBufferSource();
-  bufferSource.buffer = audioBuffer;
-  bufferSource.connect(context.destination);
-  bufferSource.start();
+  const bufferSource = context.createBufferSource()
+  bufferSource.buffer = audioBuffer
+  bufferSource.connect(context.destination)
+  bufferSource.start()
+  setIsSpeaking(true)
+  console.info("Sound started")
+
+  bufferSource.onended = function () {
+    console.info("Sound ended")
+    setIsSpeaking(false)
+  }
+
 }
 
-export { speak }
+export { speak, initSpeaker }

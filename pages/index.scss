@@ -4,16 +4,18 @@ body {
 }
 
 .iphone-x {
+  color: #fff;
   position: relative;
-  margin: 40px auto;
+  margin: 0px auto;
+  top: -60px;
   width: 360px;
   height: 780px;
   transform: scale(0.6);
   background-color: #7371ee;
-  background-image: linear-gradient(60deg, #7371ee 1%,#a1d9d6 100%);
+  background: radial-gradient(304.8% 100% at -6.93% 0%, #C3E0E5 6.47%, #004D78 32.76%, #4F008C 88.02%);
   border-radius: 40px;
   box-shadow: 0px 0px 0px 11px #1f1f1f, 0px 0px 0px 13px #191919, 0px 0px 0px 20px #111;
-  
+
   &:before,
   &:after{
     content: '';
@@ -114,4 +116,18 @@ body {
       right: 30px;
     }
   }
+
+  &:after {
+    width: 100%;
+    height: 100%;
+    background-image: url("/gifs/background.gif");
+    position: absolute;
+    background-size:100%;
+    mix-blend-mode: multiply;
+    z-index: -100;
+  }
+
+
+
+
 }

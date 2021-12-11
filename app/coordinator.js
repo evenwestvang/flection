@@ -1,15 +1,14 @@
 
 import { recognize } from "./recognize.js"
-import { speak } from "./speak.js"
+import { initSpeaker, speak } from "./speak.js"
 import { initConversation, respond } from "./conversation.js"
 
 function init(params) {
-
+  initSpeaker(params)
   initConversation()
   recognitionLoop(params, (userStatemnt) => {
     respond(userStatemnt)
   })
-
 }
 
 function beConfused() {
