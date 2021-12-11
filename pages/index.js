@@ -1,16 +1,16 @@
 import Head from 'next/head'
 
-
 import { init } from "../app/coordinator.js"
 import { useState } from 'react';
 import { PromptList } from "./PromptList.js"
+
 
 export default function Home() {
 
   const [active, setActive] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [prompts, setPrompts] = useState([1, 2, 3, 4]);
+  const [prompts, setPrompts] = useState([]);
 
   function onClick() {
     if (!active) {
@@ -21,7 +21,6 @@ export default function Home() {
       init({
         setIsListening: setIsListening,
         setIsSpeaking: setIsSpeaking,
-        prompts: prompts,
         setPrompts: setPrompts
       })
     }
@@ -41,7 +40,7 @@ export default function Home() {
           <PromptList prompts={prompts} />
 
           {isSpeaking || isListening ? <div className="active" /> : <div className="passive" />}
-          {isSpeaking || isListening ? "active" : "passive"}
+          {/* {isSpeaking || isListening ? "active" : "passive"} */}
 
         </main>
 
@@ -75,20 +74,14 @@ export default function Home() {
         h1 {
           font-weight: 100;
           font-size: 3em;
-          text-align: center;
-
         }
 
         main {
-          font-weight: 100;
           z-index: 100;
           padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
+          font-size: 20px;
         }
+        
 
     `}</style>
 

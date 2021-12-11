@@ -1,9 +1,14 @@
 
-let setIsSpeaking
+
+
+let setIsSpeaking, setPrompts, prompts
+import uuid from 'uuid';
+
 
 function initSpeaker(params) {
   console.info(params)
   setIsSpeaking = params.setIsSpeaking
+  setPrompts = params.setPrompts
 }
 
 async function speak(text) {
@@ -28,6 +33,8 @@ async function speak(text) {
   const context = new AudioContext() || new webkitAudioContext()
   const audioBuffer = await context.decodeAudioData(buffer)
   console.info("decoded audio buffer")
+
+  setPrompts(p => [...p, { id: uuid(), text }])
 
   const bufferSource = context.createBufferSource()
   bufferSource.buffer = audioBuffer

@@ -2,10 +2,14 @@
 import { recognize } from "./recognize.js"
 import { initSpeaker, speak } from "./speak.js"
 import { initConversation, respond } from "./conversation.js"
+import uuid from 'uuid';
+
+let setPrompts
 
 function init(params) {
   initSpeaker(params)
   initConversation()
+  setPrompts = params.setPrompts
   recognitionLoop(params, (userStatemnt) => {
     respond(userStatemnt)
   })
@@ -28,7 +32,10 @@ async function recognitionLoop(params, onProbableResult) {
       if (result.confidence < 0.80) {
         beConfused()
       } else {
-        onProbableResult(result.transcript)
+        const transcript = result.transcript.charAt(0).toUpperCase() + result.transcript.slice(1)
+        onProbableResult(transcript)
+        setPrompts([{ id: uuid(), text: transcript }])
+
       }
     }).catch(err => {
       console.info("Speech recognition failed", err)
